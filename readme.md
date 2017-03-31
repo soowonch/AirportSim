@@ -1,1 +1,1 @@
-Airport Simulation by Cong Du
+Airport Simulation by our team
