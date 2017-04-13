@@ -8,7 +8,7 @@ public class AirportSim {
     private static final int numberOfAirplane = 10;
     private static final int simulationTime = 100;
     private static final int maxNumberOfPassengers = 500;
-    private static final int minNumberOfPassengers = 30;
+    private static final int minNumberOfPassengers = 36; // Soo > I changed the minimum number of passengers based on historical research
     private static final int maxAirplaneSpeed = 1000;
     private static final int minAirplaneSpeed = 500;
 
@@ -65,8 +65,12 @@ public class AirportSim {
 
     // generate random max number of passengers for an airplane, range from minNumberOfPassengers to maxNumberOfPassengers
     private static int getRandomMaxNumberOfPassengers() {
-        return minNumberOfPassengers + rand.nextInt(maxNumberOfPassengers - minNumberOfPassengers + 1);
-    }
+       int[] k = {2,0,8,5,7,10,12,10,3,6,3,5};
+    	int j = 0;
+    	int simTime  = simulationTime/24/30%12; //month
+    	j = k[simTime];
+        return minNumberOfPassengers + rand.nextInt(maxNumberOfPassengers - minNumberOfPassengers +1+j);
+    } // Soo >  I changed the monthly changes of the number of passengers 
 
     // generate random speed for an airplane
     private static int getRandomSpeed() {
