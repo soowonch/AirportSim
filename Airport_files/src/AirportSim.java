@@ -1,6 +1,8 @@
 // Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowoo CHANG
 
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class AirportSim {
@@ -17,18 +19,23 @@ public class AirportSim {
 
     // List of airport with initialized runway time, on ground time and geographical coordinator of the airport
     // Source of coordinator : https://www.distancesto.com/coordinates/cn/beijing-latitude-longitude/history/991.html
-    private static List<Airport> m_listOfAirport = new ArrayList<Airport>(Arrays.asList(
-            new Airport("SEA, USA", 4, 4, new Coordinator(-122.3088165, 47.4502499)),
-            new Airport("LAX, USA", 8, 8, new Coordinator(-118.40853, 33.9415889)),
-            new Airport("ATL, USA", 10, 10, new Coordinator(-84.42770009, 33.6407282)),
-            new Airport("CDG, FRA", 9, 9, new Coordinator(2.541188, 49.013993)),
-            new Airport("PEK, CHN", 12, 12, new Coordinator(116.407395, 39.904211)),
-            new Airport("PVG, CHN", 11, 11, new Coordinator(121.8083, 31.1443))));
 
+
+    private static List<Airport> m_listOfAirport = new ArrayList<Airport>();
     // random variable
     private static Random rand = new Random();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+    	
+    	Scanner airportInfo = new Scanner(new File("./Airport_files/resource/airports.csv"));
+    	while(airportInfo.hasNextLine())
+    	{
+    		String line = airportInfo.nextLine();
+    		String[] attrs = line.split(",");
+    		m_listOfAirport.add(new Airport(attrs[1],4,4,
+    				new Coordinator(Double.parseDouble(attrs[2]),Double.parseDouble(attrs[3]))));
+    	}
+    	airportInfo.close();
 
         // Generate list of airplane with random max number of passengers and speed
         for (int i = 0; i < numberOfAirplane; i++) {
