@@ -71,6 +71,7 @@ public class Airport implements EventHandler {
                 break;
 
             case AirportEvent.PLANE_DEPARTS:
+            	
                 // Random destination airport
                 Airport destination = AirportSim.getRandomAirport(this);
                 // Calculate distance to the destination airport
