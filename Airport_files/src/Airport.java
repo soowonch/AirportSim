@@ -92,11 +92,11 @@ public class Airport implements EventHandler {
                     Simulator.schedule(landedEvent);
                 }
 
-                if(m_landingQueue.size() > 1) {
-                    AirportEvent landedEvent = new AirportEvent(m_runwayTimeToLand, this, AirportEvent.PLANE_LANDED, airplane);
-                    Simulator.schedule(landedEvent);
+                //if(m_landingQueue.size() > 1) {
+                //   AirportEvent landedEvent = new AirportEvent(m_runwayTimeToLand, this, AirportEvent.PLANE_LANDED, airplane);
+                //   Simulator.schedule(landedEvent);
 
-                }
+                //}
                 break;
 
             case AirportEvent.PLANE_LANDED:
