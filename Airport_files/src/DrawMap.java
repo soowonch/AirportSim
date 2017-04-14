@@ -64,7 +64,7 @@ public class DrawMap {
 			}
 			
 			StdDraw.clear();
-			StdDraw.picture(0.5,0.5 , "projection.png",1,1);
+			StdDraw.picture(0.5,0.5 , "./Airport_files/resource/projection.png",1,1);
 			StdDraw.setPenRadius(0.01);
 			StdDraw.setPenColor(StdDraw.BLUE);
 			//draw airport, use the list we get.
@@ -79,6 +79,7 @@ public class DrawMap {
 			StdDraw.show();
 			StdDraw.pause(20);
 		}
+		scan.close();
 
 	}
 	
@@ -92,7 +93,7 @@ public class DrawMap {
 	            new Airport("PEK", 12, 12, new Coordinator(116.407395, 39.904211))));
 		
 		try {
-			draw(m_listOfAirport,"/home/saka/Coding/java/AirportSim/Airport_files/src/test.txt",20);
+			draw(m_listOfAirport,"./Airport_files/resource/test.txt",20);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
