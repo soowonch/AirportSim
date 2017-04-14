@@ -1,4 +1,4 @@
-// Author: Xiaoyang MENG
+// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowoo CHANG
 
 public class Coordinator {
     private double m_longitude;

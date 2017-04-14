@@ -1,4 +1,4 @@
-// Author: Xiaoyang MENG
+// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowoo CHANG
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -21,6 +21,7 @@ public class Airport implements EventHandler {
     // Total circling time for this airport
     private double m_totalCirclingTime = 0;
     private String m_airportName;
+    private double m_rangeLeft;
 
     public Airport(String name, double runwayTimeToLand, double requiredTimeOnGround, Coordinator coordinator) {
         m_airportName = name;
@@ -56,19 +57,6 @@ public class Airport implements EventHandler {
         // Delay of PLANE_LANDED is m_requiredTimeOnGround which means after landed, the airplane will stay in the airport for m_requiredTimeOnGround
         // After adding every event to the event list in the simulator, the simulator will sort the list of events (TreeSet<Event> is used for keeping the events in order)
         switch(airEvent.getType()) {
-            case AirportEvent.PLANE_ARRIVES:
-                // Put airplane into a landing queue
-                m_landingQueue.add(airplane);
-                // Use a hashmap to save arrival time of each airplane
-                m_arrivalTimes.put(airplane, getCurrentTime());
-                System.out.println(getCurrentTime() + " : " + airplane.getName() + " arrived at " + m_airportName);
-
-                // if there is not other airplane in the landing queue, we add the PLANE_LANDED event into the event list
-                if(m_landingQueue.size() == 1) {
-                    AirportEvent landedEvent = new AirportEvent(m_runwayTimeToLand, this, AirportEvent.PLANE_LANDED, airplane);
-                    Simulator.schedule(landedEvent);
-                }
-                break;
 
             case AirportEvent.PLANE_DEPARTS:
                 // Random destination airport
@@ -79,10 +67,35 @@ public class Airport implements EventHandler {
                 m_flightTime = distance / airplane.getSpeed();
                 // Random number of passengers
                 airplane.randomNumberOfPassengers();
-                System.out.println(getCurrentTime() + " : " + airplane.getName() + " departed from " + m_airportName + " to " + destination.m_airportName + ", Estimation flying time " + String.format("%.2f", m_flightTime)  + " hours, Speed " + airplane.getSpeed() + "KM/H, Distance " + String.format("%.0f", distance) + "KM, Number of Passengers " + airplane.getNumberPassengers() + ", Occupation rate " + String.format("%.2f", airplane.getOccupationRate()));
+                // fuel left for this journal
+                m_rangeLeft = 100 * (airplane.getmaxAirplaneRange() - distance)/airplane.getmaxAirplaneRange();
+                System.out.println(getCurrentTime() + " : " + airplane.getName() + " departed from " + m_airportName + " to " + destination.m_airportName + ", Estimation flying time " + String.format("%.2f", m_flightTime)  + " hours, Speed " + airplane.getSpeed() + "KM/h, Distance " + String.format("%.0f", distance) + "KM, Number of Passengers " + airplane.getNumberPassengers() + ", Occupation rate " + String.format("%.2f", airplane.getOccupationRate()) + ", Fuel Left: " + String.format("%.3f",m_rangeLeft) + "% when arrive. ");
                 // Flight will arrive at the destination airport in m_flightTime time, we add Airplane arrive event to the event list with a delay of the flying time
                 AirportEvent takeoffEvent = new AirportEvent(m_flightTime, destination, AirportEvent.PLANE_ARRIVES, airplane);
                 Simulator.schedule(takeoffEvent);
+                break;
+
+            case AirportEvent.PLANE_ARRIVES:
+                // Put airplane into a landing queue
+                m_landingQueue.add(airplane);
+                // Use a hashmap to save arrival time of each airplane
+                m_arrivalTimes.put(airplane, getCurrentTime());
+
+
+
+                System.out.println(getCurrentTime() + " : " + airplane.getName() + " arrived at " + m_airportName);
+
+                // if there is not other airplane in the landing queue, we add the PLANE_LANDED event into the event list
+                if(m_landingQueue.size() == 1) {
+                    AirportEvent landedEvent = new AirportEvent(m_runwayTimeToLand, this, AirportEvent.PLANE_LANDED, airplane);
+                    Simulator.schedule(landedEvent);
+                }
+
+                if(m_landingQueue.size() > 1) {
+                    AirportEvent landedEvent = new AirportEvent(m_runwayTimeToLand, this, AirportEvent.PLANE_LANDED, airplane);
+                    Simulator.schedule(landedEvent);
+
+                }
                 break;
 
             case AirportEvent.PLANE_LANDED:
