@@ -74,6 +74,9 @@ public class Airport implements EventHandler {
                 // Flight will arrive at the destination airport in m_flightTime time, we add Airplane arrive event to the event list with a delay of the flying time
                 AirportEvent takeoffEvent = new AirportEvent(m_flightTime, destination, AirportEvent.PLANE_ARRIVES, airplane);
                 Simulator.schedule(takeoffEvent);
+                AirportSim.recordWriter.println(m_coordinator.getLongitude()+","+m_coordinator.getLatitude()+
+                		","+destination.getCoordinator().getLongitude()+","+destination.getCoordinator().getLatitude()+
+                		","+getCurrentTime()+","+(getCurrentTime()+m_flightTime));
                 break;
 
             case AirportEvent.PLANE_ARRIVES:

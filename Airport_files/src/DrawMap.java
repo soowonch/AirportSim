@@ -41,18 +41,21 @@ public class DrawMap {
 		for(;currentTime<endTime;currentTime+=timeStep)
 		{
 			//add new flight to current list;
-			if(pendingFlight.depart_time < currentTime)
-		    while(scan.hasNextLine()){
-		        String line = scan.nextLine();
-		        String[] elements = line.split(",");
-		        pendingFlight = new Flight(Double.parseDouble(elements[0]),
-		        		Double.parseDouble(elements[1]),Double.parseDouble(elements[2]),
-		        		Double.parseDouble(elements[3]),Double.parseDouble(elements[4]),
-		        		Double.parseDouble(elements[5]));
-		        if(pendingFlight.depart_time <= currentTime)
-		        	currentFlights.add(pendingFlight);
-		        else
-		        	break;
+			if(pendingFlight.depart_time <= currentTime)
+			{
+				currentFlights.add(pendingFlight);
+				while(scan.hasNextLine()){
+					String line = scan.nextLine();
+					String[] elements = line.split(",");
+					pendingFlight = new Flight(Double.parseDouble(elements[0]),
+							Double.parseDouble(elements[1]),Double.parseDouble(elements[2]),
+							Double.parseDouble(elements[3]),Double.parseDouble(elements[4]),
+							Double.parseDouble(elements[5]));
+					if(pendingFlight.depart_time <= currentTime)
+						currentFlights.add(pendingFlight);
+					else
+						break;
+		    }
 		    }
 			//delete obsolete flights (which should already at destination):
 			Iterator<Flight> it= currentFlights.iterator();
