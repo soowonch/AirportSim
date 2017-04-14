@@ -3,18 +3,23 @@
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 
 public class AirportSim {
     // Modify these Constants to realize different simulation
-    private static final int numberOfAirplane = 20;
+    private static final int numberOfAirplane = 50;
     private static final int simulationTime = 100;
     private static final int maxNumberOfPassengers = 500;
-    private static final int minNumberOfPassengers = 30;
+    private static final int minNumberOfPassengers = 36;
     private static final int maxAirplaneSpeed = 1000;
     private static final int minAirplaneSpeed = 500;
     // maximum airplane range. in this simulation we use Boeing 787-8 as the model and it has the largest range in 787 family: 14140 km.
     private static final int maxAirplaneRange = 14140;
+    
+    private static final String flightRecordFile = "./Airport_files/resource/flights.txt";
+    public static PrintWriter recordWriter= null;
 
 
     // List of airport with initialized runway time, on ground time and geographical coordinator of the airport
@@ -25,8 +30,8 @@ public class AirportSim {
     // random variable
     private static Random rand = new Random();
 
-    public static void main(String[] args) throws FileNotFoundException {
-    	
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+    	recordWriter = new PrintWriter(flightRecordFile,"UTF-8");
     	Scanner airportInfo = new Scanner(new File("./Airport_files/resource/airports.csv"));
     	while(airportInfo.hasNextLine())
     	{
@@ -53,6 +58,8 @@ public class AirportSim {
         Simulator.run();
         // generate circling report for each airport and output it
         airportCirclingReport();
+        recordWriter.close();
+        DrawMap.draw(m_listOfAirport, flightRecordFile, simulationTime);
     }
 
     // get a random airport which is different from the departure airport
