@@ -1,4 +1,4 @@
-// Author: Xiaoyang MENG
+// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowoo CHANG
 
 public class AirportEvent extends Event {
     public static final int PLANE_ARRIVES = 0;
